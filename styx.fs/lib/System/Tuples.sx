@@ -1,0 +1,41 @@
+
+namespace System
+
+  using Styx
+
+  --| A n-elements tuple.
+  Tuple : [Type] -> Type
+  Tuple [] = 0
+  Tuple (x::xs) = x + xs.Length
+
+  --| A tuple pattern.
+  TuplePattern : Pattern
+  TuplePattern = ?unknown
+
+  --| A tuple construction expression.
+  TupleSyntax : Syntax Expression
+  TupleSyntax = expect "("
+                first  <- parse until ","
+                eat
+                commit
+                rest   <- ParseRest
+                expect ")"
+                ?unknown
+    where
+      ParseRest : Syntax Expression
+      ParseRest = value <- parse until "," or ")"
+                  delim <- token
+                  eat
+
+                  if delim.ToString == ","
+                    then (value::ParseRest)
+                    else (value::[])
+
+  --| A pair.
+  Pair : Type -> Type -> Type
+  Pair a b = Tuple [a, b]
+
+  --| A triple.
+  Triple : Type -> Type -> Type -> Type
+  Triple a b c = Tuple [a, b, c]
+

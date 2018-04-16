@@ -1,0 +1,7 @@
+
+namespace Styx
+  --^ The Styx compiler.
+  --^
+  --^ This namespace contains everything needed to read, parse, execute and compile
+  --^ Styx code.
+

@@ -1,0 +1,42 @@
+
+-- The following call renames every existing function to "Zero.[fn-name]", in order
+-- to avoid conflicts with the functions that are to be defined.
+static
+  Zero.Styx.RenameAll
+
+
+using Zero.System
+using Zero.System.FileSystem
+
+-- First, we read the actual compiler from here.
+GetFiles : [String] -> [String] -> [String]
+GetFiles [] acc = acc
+
+GetFiles (file::files) acc
+  when (file.EndsWith "Main.sx") || (file.EndsWith "Initialize.sx") = GetFiles files acc
+
+GetFiles (file::files) acc = match (Exists file, file.EndsWith ".sx") with
+  (False, _)    -> GetFiles files acc           -- Item does not exist.
+  (True, True)  -> GetFiles files (file::acc)   -- Item is a Styx file.
+  (True, False) ->                              -- Item is a directory.
+    let additional = (GetFiles (ReadDirectory file) acc) in
+    GetFiles files acc
+
+
+static
+  Zero.Styx.Intrinsics.BindFiles (GetFiles ["."])
+
+
+  -- From now on, "Zero.Styx.[...]" will refer to the executing VM;
+  -- whereas "Styx.[...]" will refer to the imported compiler.
+
+
+  -- Then, we read and bind the "main" function that'll be compiled.
+  let main = ReadAll "./Main.sx" in
+  let main = Styx.Binder.Bind [ main ] in
+
+
+  -- Finally, if the function was successfully bound, we emit it to stdout.
+  if main.IsSuccess
+      then Styx.Emitter.Emit (main.Lookup "Main") Styx.IO.Stdout
+      else ()

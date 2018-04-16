@@ -1,0 +1,50 @@
+
+namespace System.Language
+
+  --| Defines an expression.
+  class Expr ex x where
+    ExpressionType : TypeInstance
+    Type           : ex x -> TypeInstance
+    Compute        : ex x -> x
+
+  --| Defines an expression.
+  type Expression x = Extension (Extension x) | Native (Native x) | Meta
+
+  --| Defines an extension expression.
+  class Extension ex x where
+    Type           : ex x -> TypeInstance
+    ExpressionType : TypeInstance
+    TargetType     : TypeInstance
+
+    Lower : ex x -> Expression x
+
+    LowerFully : ex x -> Expression x
+    LowerFully (Extension x) = LowerFully x.Lower
+    LowerFully other         = other
+
+  --| Defines a native expression.
+  class Native ex x where
+    Type           : ex x -> TypeInstance
+    ExpressionType : TypeInstance
+
+    Build : ex x -> Value x
+
+  --| A meta-expression, which cannot be compiled.
+  type Meta = 0
+
+  instance Expr () for Meta where
+    Type _ = ()
+    ExpressionType = ?exprTy
+    Compute _ = ()
+
+  instance Expr a for Extension where
+    Type _ = a
+    ExpressionType = ?exprTy
+    Compute x = x.LowerFully.Compute
+
+  instance Expr a for Native where
+    Type _ = a
+    ExpressionType = ?exprTy
+    Compute x = ?computeNative
+
+

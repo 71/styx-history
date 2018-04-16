@@ -1,0 +1,33 @@
+
+namespace System.Collections
+
+  using Styx
+
+  --| A chained list.
+  List : Type -> Type
+  List a = Empty | Cons a (List a)
+
+  --| List destructuring.
+  ListPattern : Pattern
+  ListPattern = expect "["
+                commit
+
+
+  --| Returns the length of the list.
+  Length : List a -> Int
+  Length Empty = 0
+  Length (Cons _ xs) = 1 + xs.Length
+
+  --| Returns the head of the list.
+  Head : List a -> a
+  Head Empty = ?error
+  Head (Cons h _) = h
+
+  --| Prepends an element to a list.
+  :: : a -> List a -> List a
+  :: x xs = ?unknown
+
+  --| Merges two lists together.
+  @ : List a -> List a -> List a
+  @ a b = ?unknown
+

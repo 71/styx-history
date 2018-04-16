@@ -1,0 +1,90 @@
+
+namespace System
+
+  using System.Environment
+
+  private
+    X86 = Backend == "x86"
+
+  static if X86 then
+    using Styx.Backends.Assembly
+
+
+  --| A boolean.
+  type Boolean = True | False
+
+  --| A byte.
+  type Byte = 8
+
+  --| A 16-bits signed integer.
+  type I16 = 16
+
+  --| A 32-bits signed integer.
+  type I32 = 32
+
+  --| A 64-bits signed integer.
+  type I64 = 64
+
+  --| A signed integer with a default size.
+  type Int = Environment.PointerSize
+
+  --| A 16-bits unsigned integer.
+  type U16 = 16
+
+  --| A 32-bits unsigned integer.
+  type U32 = 32
+
+  --| A 64-bits unsigned integer.
+  type U64 = 64
+
+  --| A unsigned integer with a default size.
+  type UInt = Environment.PointerSize
+
+
+  -- OPERATIONS
+
+  --| Logical 'not'.
+  not : Boolean -> Boolean
+
+  static if X86 then
+    not v = assembly result <- 1
+                     mov result, v
+                     xor result, 1
+                     result
+
+  --| Logical 'not'.
+  ! = not
+
+  --| Logical 'or'.
+  or : Boolean -> Boolean -> Boolean
+
+  static if X86 then
+    or l r = assembly result <- 1
+                      mov result, l
+                      or  result, r
+                      result
+
+  --| Logical 'or'.
+  || = or
+
+  --| Logical 'and'.
+  and : Boolean -> Boolean -> Boolean
+
+  static if X86 then
+    and l r = assembly result <- 1
+                       mov result, l
+                       and result, r
+                       result
+
+  --| Logical 'and'.
+  && = and
+
+  --| Logical 'xor'.
+  xor : Boolean -> Boolean -> Boolean
+
+  static if X86 then
+    xor l r = assembly result <- 1
+                       mov result, l
+                       xor result, r
+                       result
+

@@ -1,0 +1,27 @@
+
+namespace System.Memory
+  --^ Utilities for manipulating memory.
+
+
+  --| Interprets the given value as a value of another type.
+  Transmute : a -> b
+  Transmute = ?compilerImplemented
+
+  --| Allocates a region of memory.
+  Allocate : UInt -> Ptr a
+
+  static if Backend == "X86" then
+    Allocate c = (System.Foreign.C.Malloc c) as Ptr a
+
+  --| Frees a region of memory.
+  Free : Ptr a -> ()
+
+  static if Backend == "X86" then
+    Free = System.Foreign.C.Free
+
+  --| Copies a region of memory.
+  Copy : Ptr a -> Ptr a -> UInt -> ()
+
+  static if Backend == "X86" then
+    Copy dest src num = System.Foreign.C.Memcpy dest src num |> ignore
+

@@ -1,0 +1,41 @@
+
+namespace System
+
+  --| An option.
+  type Option a = None | Some a
+
+  instance Default Option a where
+    Default = None
+
+  --| An operator that makes a value optional.
+  ? : Type -> Type
+  ? t = Option t
+
+  static
+    DefinePostfixUnaryOperator ?
+
+
+  --| Either left, or right.
+  Either : Type -> Type -> Type
+  Either left right = Left left | Right right
+
+  instance (Default l) => Default (Either l r) where
+    Default = Left Default
+
+  --| An operator that makes a value be one of two types.
+  | : Type -> Type -> Type
+  | left right = Either left right
+
+  static
+    DefineBinaryOperator | 9
+
+
+  --| The result of a computation.
+  Result : Type -> Type -> Type
+  Result ok err = Ok ok | Err err
+
+  instance (Default err) => Default (Result l r) where
+    Default = Err Default
+
+
+

@@ -1,0 +1,26 @@
+
+namespace System.Console
+  --^ Console utilities.
+
+  --| Writes the given string to the console.
+  Write : String -> IO ()
+  Write s = ?unknown
+
+  --| Writes the given string to the console, followed by a new line.
+  WriteLine : String -> IO ()
+  WriteLine s = do Write s
+                   WriteLine
+
+  --| Writes a new line.
+  WriteLine : IO ()
+  WriteLine = Write Environment.NewLine
+
+
+  --| Reads a character.
+  Read : IO Char
+  Read = ?unknown
+
+  --| Reads a line.
+  ReadLine : IO String
+  ReadLine = ?unknown
+

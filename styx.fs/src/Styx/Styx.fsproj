@@ -1,0 +1,58 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="Text/Token.fs" />
+    <Compile Include="State.fs" />
+    <Compile Include="Hole.fs" />
+    <Compile Include="Reactive/Reactive.fs" />
+    <Compile Include="Reactive/Future.fs" />
+    <Compile Include="Reactive/ObservableList.fs" />
+    <Compile Include="Core.fs" />
+    <Compile Include="IL.fs" />
+    <Compile Include="Reactive/Specialized.fs" />
+    <Compile Include="Library/Types.fs" />
+    <Compile Include="Expressions/Call.fs" />
+    <Compile Include="JIT/Emitter.fs" />
+    <Compile Include="Compiler.fs" />
+    <Compile Include="Binder.fs" />
+    <Compile Include="Library/Bridge.fs" />
+
+    <Compile Include="Text/Parse/Lexer.fs" />
+    <Compile Include="Text/Parse/TokenStream.fs" />
+    <Compile Include="Text/Parse/Combinators.fs" />
+    <Compile Include="Text/Parse/Tokens.fs" />
+    <Compile Include="Expressions/CompilationUnit.fs" />
+    <Compile Include="Expressions/Meta.fs" />
+    <Compile Include="Expressions/Pattern.fs" />
+    <Compile Include="Expressions/Literals.fs" />
+    <Compile Include="Expressions/Flow.fs" />
+    <Compile Include="Expressions/Emit.fs" />
+    <Compile Include="Expressions/Operators.fs" />
+    <Compile Include="Expressions/Toplevel.fs" />
+    <Compile Include="Expressions/Function.fs" />
+    <Compile Include="Expressions/Type.fs" />
+    <Compile Include="Expressions/Tuples.fs" />
+    <Compile Include="Expressions/Foreign.fs" />
+    <Compile Include="Expressions/HoleExpression.fs" />
+    <Compile Include="Library/Functions.fs" />
+    <Compile Include="Text/Syntax/Syntax.fs" />
+    <Compile Include="Expressions/Patterns.fs" />
+    <Compile Include="Text/Syntax/PatternsSyntax.fs" />
+    <Compile Include="Text/Syntax/Binary.fs" />
+    <Compile Include="Text/Syntax/Expressions.fs" />
+    <Compile Include="Text/Syntax/Signature.fs" />
+    <Compile Include="Text/Syntax/ToplevelSyntax.fs" />
+    <Compile Include="Library/Initialization.fs" />
+    <Compile Include="Program.fs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ExpandableAllocator" Version="0.3.0-pre" />
+  </ItemGroup>
+
+</Project>

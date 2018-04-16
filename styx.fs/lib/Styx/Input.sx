@@ -1,0 +1,12 @@
+
+namespace Styx
+
+  using System.FileSystem
+
+  --| An input file.
+  type InputFile = File (File, String)
+                 | Memory (String, String)
+
+  --| A complete input.
+  type Input = [InputFile]
+

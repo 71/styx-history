@@ -1,0 +1,51 @@
+
+namespace System.Reactive
+  --^ Functional Reactive Programming utilities.
+
+  --| Represents a subscription to a `Flow`, which can be cancelled.
+  class Subscription s where
+      Unsubscribe : ByValue s -> ()
+
+  --| Represents a reactive flow of data.
+  class Flow f a where
+      Subscribe : f a -> (a -> ()) -> Subscription
+
+
+  instance Monad for Flow f a where
+      Pure v = f a
+
+
+  -- [ SUBSCRIPTIONS IMPLEMENTATIONS ]
+
+  instance Subscription for () where
+      Unsubscribe _ = ()
+
+  instance Subscription for (a -> ()) where
+      Unsubscribe f = f
+
+
+  -- [ FLOWS IMPLEMENTATIONS ]
+
+  instance Flow a for [a] where
+      Subscribe : [a] -> (a -> ()) -> Subscription
+      Subscribe [] _ = ()
+      Subscribe (x::xs) f = (f x); Subscribe xs
+
+  instance Flow a for a where
+      Subscribe : a -> (a -> ()) -> Subscription
+      Subscribe x f = f x
+
+  --| An empty flow.
+  Empty = ()
+
+  instance Flow for Empty where
+      Subscribe : Empty -> (a -> ()) -> Subscription
+      Subscribe _ _ = f
+
+  --| An infinite flow.
+  Infinite : Type
+  Infinite a = Infinite a
+
+  instance Flow for Infinite where
+      Subscribe : ?
+

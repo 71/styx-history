@@ -1,0 +1,69 @@
+
+namespace System.Core
+  --^ Core features required by most Styx programs, including the System library,
+  --^ and the compiler itself.
+
+
+  --| Indicates an argument passed by value.
+  --| This is the default behavior for copyable types.
+  ByValue : Type -> Type
+  ByValue a = ?compilerImplemented
+
+  --| Indicates an argument passed by reference.
+  --| This is the default behavior for non-copyable types.
+  ByRef : Type -> Type
+  ByRef a = ?compilerImplemented
+
+  --| Indicates a lazily-computed argument.
+  Lazy : Type -> Type
+  Lazy a = ?compilerImplemented
+
+  --| Indicates a quoted argument.
+  Q : Type -> Type
+  Q a = ?compilerImplemented
+
+
+  --| Tries to assert conditions on a type that cannot be ensured
+  --| statically. If the conditions are true, the body is returned.
+  --| Otherwise, `None` is returned.
+  maybe : (a -> b) -> Q a -> b?
+  maybe q = ?compilerImplemented
+
+  --| Asserts that an expression matches the upcoming axioms.
+  --| If the aforementioned axiom is not actually true, an exception
+  --| will be thrown.
+  assert : Q a -> ()
+  assert q = ?compilerImplemented
+
+  --| Statically assumes that the given axiom is true.
+  --| If the aforementioned axiom is not actually true, the program
+  --| enters a UB state.
+  assume : Q a -> ()
+  assume q = ?compilerImplemented
+
+  --| Returns whether the given expression matches the upcoming axioms.
+  satisfies : Q a -> Boolean
+  satisfies q = ?compilerImplemented
+
+
+  --| The never type, which indicates a value which stops the program, or never returns.
+  Never : Type
+  Never = 0
+
+
+  --| A concept, which defines what a type must be able to do.
+  Concept : Type
+  Concept = Type -> Boolean
+
+  --| An axiom, which defines the instance of a type.
+  Axiom : Type
+  Axiom = ?unknown
+
+
+  --| A closure.
+  class (f : a -> r) => Closure c f where
+    Invoke : c -> a -> r
+
+  instance Closure c f for (a -> b) where
+    Invoke f i = f i
+

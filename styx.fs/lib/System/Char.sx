@@ -1,0 +1,25 @@
+
+namespace System
+
+  --| A character.
+  --|
+  --| Characters are represented as UTF-8 characters, and are thus stored as 32-bits integers.
+  type Char = 32 where
+
+    --| Returns whether the given character is a whitespace character.
+    IsWhitespace ' ' | '\x09'...'\x0d' = True
+    IsWhitespace                       = False
+
+    --| Returns whether the given character is a letter ([a-zA-Z]).
+    IsLetter 'a' .. 'z' | 'A' .. 'Z' = True
+    IsLetter _                       = False
+
+    --| Returns whether the given character is a digit ([0-9]).
+    IsDigit '0' .. '9' = True
+    IsDigit _          = False
+
+    --| Returns whether the given character is a letter or digit ([a-zA-Z0-9]).
+    IsLetterOrDigit '0' .. '9' | 'a' .. 'z' | 'A' .. 'Z' = True
+    IsLetterOrDigit _                                    = False
+
+

@@ -1,0 +1,16 @@
+
+namespace Styx.Backends.Assembly
+  --^ A backend that emits directly to machine code.
+
+  using Styx.Text
+
+
+  --| The assembly backend.
+  AssemblyBackend : Type
+  AssemblyBackend = ?assembly
+
+  --| The assembly syntax.
+  AssemblySyntax : Syntax
+  AssemblySyntax = expect "assembly"
+                   ?assemblySyntax
+

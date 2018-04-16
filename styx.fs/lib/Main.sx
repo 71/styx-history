@@ -1,0 +1,16 @@
+
+-- Import necessary references.
+static
+  Styx.Binder.ImportAll Styx.CurrentBinder "Styx"
+
+  Styx.Binder.ImportAll Styx.CurrentBinder "System"
+  Styx.Binder.ImportAll Styx.CurrentBinder "System.FileSystem"
+  Styx.Binder.ImportAll Styx.CurrentBinder "System.IO"
+
+-- This function is parsed by the compiler, and emitted to stdout.
+Main : IO ()
+Main = let binder = Binder in
+       let stdin  = Stdin in
+       let input  = ReadToEnd stdin in
+
+       binder.Execute input

@@ -1,0 +1,40 @@
+
+namespace Styx
+
+  --| A type argument.
+  type TypeArgument = ()
+
+  --| A function component.
+  type Component = Type    Type
+                 | Concept Concept
+                 | Class   Class
+
+  --| A constraint on a function type parameter.
+  type Constraint = ()
+
+  --| A function.
+  type Function = { Namespace   : String           ,
+                    Name        : String           ,
+                    TypeArgs    : Vec TypeArgument ,
+                    Components  : Vec Component    ,
+                    Constraints : Vec Constraint   }
+
+  --| Returns the length of the.
+
+  --| Map
+
+
+  --| 
+  Check : Function -> [Type] -> Maybe Type
+  Check fun types =
+    if fun.Components.Length - 1 != types.Length then
+      None
+    else
+      match (makeMap fun types) with
+      | None -> None
+      | Some map -> Some ?unknown
+
+    where
+      mapMap = 
+
+

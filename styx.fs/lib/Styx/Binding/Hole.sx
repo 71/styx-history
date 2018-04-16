@@ -1,0 +1,10 @@
+
+namespace Styx.Binding
+
+  --| A "hole" in a Styx program.
+  --|
+  --| Holes represent parts of a program that cannot be fully bound,
+  --| and are thus ignored.
+  --| Using functions that contain holes results in a compile-time error.
+  type Hole = { Location: Location }
+

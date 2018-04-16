@@ -1,0 +1,20 @@
+
+namespace System.Language
+
+  --| A type property.
+  type Property = { Name : String       ,
+                    Type : TypeInstance }
+
+  --| The static value of a `Property`.
+  type PropertyValue a = Exact a
+                       | Range a a
+                       | Many [Property a]
+                       | Operation (Expr a)
+
+  instance Functor (Property a) where
+    Map f (Exact x)   = Exact (f x)
+    Map f (Range x y) = Range (f x) (f y)
+    Map f (Many xs)   = Many (Map f xs)
+
+    Map f (Operation x) = ?unknown
+

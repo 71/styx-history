@@ -1,0 +1,71 @@
+
+static unless (exists "System.Foreign.MakeForeign") then
+  pass
+
+namespace System.Foreign.C
+  --^ FFI over libc.
+
+  --| Represents a file.
+  CFile : Type
+  CFile = Ptr ()
+
+  --| Represents a C string.
+  CString : Type
+  CString = Ptr Char
+
+  --| Allocates some memory.
+  Malloc : Int -> UInt
+  Malloc = MakeForeign "libc" "malloc"
+
+  --| Frees some memory.
+  Free : UInt -> ()
+  Free = MakeForeign "libc" "free"
+
+  --| Exits the current program.
+  Exit : Int -> Never
+  Exit = MakeForeign "libc" "exit"
+
+  --| Writes a character to the stream, and advances by one.
+  Fputc : Int -> CFile -> Int
+  Fputc = MakeForeign "libc" "fputc"
+
+  --| Writes a string to the stream, and advances by its length.
+  Fputs : CString -> CFile -> Int
+  Fputs = MakeForeign "libc" "fputs"
+
+  --| Writes a block of data to the stream, and advances by the specified length.
+  Fwrite : Ptr () -> Int -> Int -> CFile -> Int
+  Fwrite = MakeForeign "libc" "fwrite"
+
+  --| Opens the given file.
+  Fopen : CString -> CString -> CFile
+  Fopen = MakeForeign "libc" "fopen"
+
+  --| Closes the given stream.
+  Fclose : CFile -> Int
+  Fclose = MakeForeign "libc" "fclose"
+
+  --| Gets an environment string.
+  GetEnv : CString -> CString
+  GetEnv = MakeForeign "libc" "getenv"
+
+  --| Gets a character from the stream.
+  Fgetc : Ptr () -> Int
+  Fgetc = MakeForeign "libc" "fgetc"
+
+  --| Gets a line from the stream.
+  Fgets : CString -> Int -> CFile -> CString
+  Fgets = MakeForeign "libc" "fgetc"
+
+  --| Executes a system command.
+  System : CString -> Int
+  System = MakeForeign "libc" "system"
+
+  --| Copies memory.
+  Memcpy : Ptr () -> Ptr () -> UInt -> Ptr ()
+  Memcpy = MakeForeign "libc" "memcpy"
+
+  --| Returns the length of the string.
+  Strlen : CString -> UInt
+  Strlen = MakeForeign "libc" "strlen"
+

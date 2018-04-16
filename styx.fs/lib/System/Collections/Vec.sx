@@ -1,0 +1,95 @@
+
+namespace System.Collections
+
+  using System.Memory
+
+  --| A static vector stored on the heap.
+  Vec : Type -> IntProperty -> Type
+  Vec a n = { Pointer:  Ptr a
+            , Items:    UInt
+            , Capacity: UInt
+            }
+            exporting immutably (Pointer, Capacity)
+
+  --| Length of the vector.
+  Length : Vec a n -> Property n
+  Length v = PropertyValue v.Items
+
+  --| Drops the vector.
+  Drop : Vec a n -> ()
+  Drop v = Free v.Pointer
+
+  --| Ensures that the vector can host n elements.
+  Reserve : Vec a n -> UInt -> Vec a n
+  Reserve v i = if i > v.Capacity then
+                  let prevCap = v.Capacity in
+
+                  let nextCap = (if prevCap == 0 then
+                    v.Capacity = 2
+                  else
+                    v.Capacity = prevCap * 2) in
+
+                  let ptr = Allocate (nextCap * SizeOf a) in
+  
+                  Copy ptr v.Pointer v.Items * (SizeOf a)
+                  Free v.Pointer
+
+                  (v.Pointer = ptr) |> ignore
+                v
+
+  --| Creates a new empty vector.
+  Empty : Vec a 0
+  Empty = { Pointer = 0; Length = 0; Capacity = 0; }
+
+  --| Creates a new vector, given its only item.
+  New : a -> Vec a 1
+  New x = let vec = Empty in
+          vec.Push x
+          vec
+
+
+  --| Pushes an item to the end of the vector.
+  Push : Vec a n -> ByValue a -> Vec a (n + 1)
+  Push x v = let requiredSize = (v.Items + 1) in
+
+             (Reserve requiredSize) |> ignore
+             (v.Items = requiredSize) |> ignore
+             (v.Pointer.Offset (requiredSize - 1)).Write x
+
+             assume v is Vec a (n + 1)
+
+             v
+
+
+  --| Pops the item at the end of the vector.
+  Pop : Vec a n -> ByValue a where n > 0
+  Pop v = let newCount = v.Items - 1 in
+          let item     = (v.Pointer.Offset newCount).Read in
+          (v.Items = newCount) |> ignore
+
+          assume v is Vec a (n - 1)
+
+          item
+
+  --| Gets the item at the nth position of the vector.
+  Nth : Vec a n -> m -> a where m >= 0 && n > m
+  Nth v n = 0
+
+  --| Removes the nth element, and returns it.
+  Remove : Vec a n -> m -> ByValue a where m >= 0 && n > m
+  Remove = ?remove
+
+  --| Removes the nth element, replaces it by the last element, and returns the former.
+  --| This is more efficient than `Remove`, but doesn't preserve the order of the elements.
+  SwapRemove : Vec a n -> m -> ByValue a where m >= 0 && n > m
+  SwapRemove = ?swap
+
+  --| Gets the first item of the vector.
+  Head : Vec a n -> a where n > 0
+  Head v = v.Pointer.Read
+
+
+  --| Iterates over the vector.
+  To : Vec a n -> Seq a n
+  To v = ?anonymousObjects
+

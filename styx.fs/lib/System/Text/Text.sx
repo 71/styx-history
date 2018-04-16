@@ -1,0 +1,15 @@
+
+namespace System.Text
+  --^ Text and formatting utilities.
+
+  --| Represents an object that can be displayed for an end-user.
+  class Display d where
+    --| Formats the object for displaying.
+    Display : d -> Formatter -> Formatter
+
+  --| Represents an object that can be displayed for debugging.
+  class Debug d where
+    --| Formats the object for debugging.
+    --| Performances do not matter here.
+    Debug : d -> Formatter -> Formatter
+

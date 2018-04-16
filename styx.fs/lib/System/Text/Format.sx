@@ -1,0 +1,20 @@
+
+namespace System.Text
+
+  --| Represents an object that can format data.
+  class Formatter f where
+    --| Pushes the given char to the end of the formatted output.
+    Push : f -> Char -> f
+
+    --| Pushes the given string to the end of the formatted output.
+    Push : f -> String -> f
+
+    --| Pushes a new line to the end of the formatted output.
+    PushNewLine = Push Environment.NewLine
+
+
+  --| Formats the given string using the provided arguments.
+  Format : String -> [Q Expression] -> String
+  Format _ [] = ""
+  Format tmpl (x::xs) = ?format
+

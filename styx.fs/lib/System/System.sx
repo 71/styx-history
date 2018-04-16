@@ -1,0 +1,46 @@
+
+namespace System
+  --^ The Styx standard library.
+  --^
+  --^ It contains various classes, concepts and types that make Styx
+  --^ usable without external dependencies. It also contains everything
+  --^ needed by the compiler itself.
+
+  -- This file contains miscellaneous utilities that belong in the System namespace,
+  -- but don't need their own file.
+
+
+
+  --| The identity function.
+  Identity x = x
+
+
+  --| Represents a type that has a default value.
+  class Default f where
+    Default : f
+
+  instance Default () where
+    Default = ()
+
+
+  --| Represents a type that can be cast into another type.
+  class Cast from to where
+    To : from -> to
+
+  --| Returns.
+  From : (Cast to from) => to -> from
+  From = To
+
+  instance Cast a a where
+    To = Identity
+
+  instance (Cast a b) => Cast a (Option b) where
+    To x = Some (x.To b)
+
+  --| Casts the value to another type.
+  to : from -> to
+  to = To
+
+  instance
+    DefineBinaryOperator to 1
+

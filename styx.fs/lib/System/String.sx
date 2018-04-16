@@ -1,0 +1,11 @@
+
+namespace System
+
+  --| An immutable string stored on the heap.
+  String : Type
+  String = (Ptr Byte) + Int
+
+  --| A mutable and growable string stored on the heap.
+  StringBuffer : Type
+  StringBuffer = (Ptr Byte) + Int + Int
+

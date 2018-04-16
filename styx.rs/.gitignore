@@ -1,0 +1,8 @@
+.vscode/
+target/
+**/*.rs.bk
+Cargo.lock
+__pycache__/
+tags
+*.ipynb
+.ipynb_checkpoints/

@@ -1,0 +1,26 @@
+
+namespace System.Environment
+
+  --| The string identifier of the current backend.
+  Backend : String
+  Backend = "Interpreted"
+
+  --| An integer that represents the version of the current backend.
+  BackendVersion : Int
+  BackendVersion = 0
+
+  --| The size of a pointer on the target architecture.
+  PointerSize : Int
+  PointerSize = if Backend == "x64" then 64 else 32
+
+  --| Returns a string identifying the target platform.
+  Platform : String
+  Platform = "Unix"
+
+  --| Returns the new-line character on the target platform.
+  NewLine : String
+  NewLine = newLine Platform
+    where
+      newLine "Windows" = "\r\n"
+      newLine _         = "\n"
+

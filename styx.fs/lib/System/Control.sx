@@ -1,0 +1,24 @@
+
+namespace System.Control
+  --^ Functional utilities.
+
+
+  --| Defines a functor.
+  class Functor f where
+    Map : (a -> b) -> f a -> f b
+
+  --| Defines a monoid.
+  class Monoid m where
+    Empty  : m
+    Append : m -> m -> m
+
+  --| Defines a monad.
+  class Monad m where
+    Bind : m a -> (a -> m b) -> m b
+    Pure : a -> m a
+
+  --| Defines an applicative.
+  class Applicative f where
+    <*>  : f (a -> b) -> f a -> f b
+    Pure : a -> f a
+

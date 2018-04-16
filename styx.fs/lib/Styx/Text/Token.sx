@@ -1,0 +1,36 @@
+
+namespace Styx.Text
+
+  using System
+
+  --| The span of a `Token` in its source input.
+  type Span = { Start : Int, Length : Int } where
+
+    --| Returns a new span, given its start position and length.
+    New : Int -> Int -> Span
+    New start length = Span { Start = start, Length = length }
+
+    --| Returns a new span of length 1, given its start position.
+    New : Int -> Span
+    New start = Span { Start = start, Length = 1 }
+
+  class Default for Span where
+    Default : Span
+    Default = Span { Start = 0, Length = 0 }
+
+
+  --| The location of an expression in an input.
+  type Location = { Span : Span, File : InputFile }
+
+  --| A token of Styx code.
+  type Token = { Span : Span, Kind : TokenKind }
+
+  --| The kind of a `Token`.
+  type TokenKind = EOF | NOP | Indent | Comma | Semicolon | LParen | RParen | LBracket | RBracket
+                 | String   String
+                 | Float    String
+                 | Integer  Integer
+                 | Char     Char
+                 | Ident    String
+                 | Doc     (String, Boolean)
+

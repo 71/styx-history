@@ -1,0 +1,45 @@
+
+namespace Styx.Text
+
+  using System
+  using System.Collections
+
+  --| A structure that transforms source code into a `Token` stream.
+  Lexer : Type
+  Lexer = { Source:  String ,
+            CharPos: Int    ,
+            BytePos: Int    }
+
+
+  --| Transforms a character stream into a token.
+  Lex : [Char] -> (TokenKind, Int, [Char]) [ diagnostics ::: Diagnostics ]
+  Lex [] = (EOF, 0, [])
+
+  Lex (ch::xs) when ch.IsWhitespace =
+
+  Lex (','::xs) = (Comma, 1, xs)
+  Lex (';'::xs) = (Semicolon, 1, xs)
+  Lex ('('::xs) = (LParen, 1, xs)
+  Lex (')'::xs) = (RParen, 1, xs)
+  Lex ('['::xs) = (LBracket, 1, xs)
+  Lex (']'::xs) = (RBracket, 1, xs)
+
+  Lex ('`'::xs) =
+
+  Lex (ch::xs) when ch.IsDigit =
+
+  Lex (ch::xs) when cx == '"' || ch == '\'' =
+
+
+  Lex (ch::xs) =
+
+
+  --| Transforms a character stream into a token sequence.
+  Tokenize : [Char] -> Vec Token [ diagnostics ::: Diagnostics ]
+  Tokenize chars = let tokens = Vec.Empty in populate 0 tokens (Lex chars) tokens
+    where
+      populate _ tokens (EOF,  _, _) = tokens
+      populate i tokens (NOP,  l, r) = populate (i + l) (Lex r) tokens
+      populate i tokens (kind, l, r) = let token = Token { Span = (New i l), Kind = kind } in
+                                       populate (i + l) (Lex r) (tokens.Push token)
+

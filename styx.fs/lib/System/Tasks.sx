@@ -1,0 +1,13 @@
+
+namespace System.Tasks
+
+  --| Represents a task that might end in the future.
+  type Task v = Done v
+              | Pending (() -> Task v)
+
+
+  --| Waits for the completion of the task.
+  Wait : Task v -> v
+  Wait (Done v) = v
+  Wait (Pending f) = Wait f
+

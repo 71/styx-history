@@ -1,0 +1,10 @@
+
+namespace System.Foreign
+  --^ FFI utilities for official backends.
+
+  static if Backend.SupportsC then
+
+    --| Creates a function that performs an FFI call.
+    MakeForeign : String -> String -> a
+    MakeForeign lib fnName = ?compilerImplemented
+

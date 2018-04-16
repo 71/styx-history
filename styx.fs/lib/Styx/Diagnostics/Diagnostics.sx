@@ -1,0 +1,41 @@
+
+namespace Styx
+
+  using System
+  using System.Collections
+
+  --| The severity of a [`Diagnostic`].
+  DiagnosticSeverity : Type
+  DiagnosticSeverity = Fatal | Error | Warning | Info
+
+  --| A diagnostic.
+  Diagnostic : Type
+  Diagnostic = { Severity : DiagnosticSeverity
+                 Message  : String
+                 Span     : Span               }
+
+
+  --| Defines an object that can report diagnostics.
+  Diagnostics : Concept
+  Diagnostics t = t.Has "Report"
+               && t.Has "HasError"
+
+
+  --| Does nothing with a diagnostic.
+  Report : () -> Diagnostic -> ()
+  Report _ _ = ()
+
+  --| Returns false.
+  HasError : () -> Boolean
+  HasError = False
+
+
+  --| Adds the given diagnostic to the list of diagnostics.
+  Report : List Diagnostic -> Diagnostic -> List Diagnostic
+  Report l d = d::l
+
+  --| Returns whether a diagnostic has already been logged.
+  HasError : List Diagnostic -> Boolean
+  HasError [] = False
+  HasError (x::xs) = if x.IsError then True else xs.HasError
+

@@ -1,0 +1,12 @@
+
+namespace System.Collections
+
+  --| Defines an abstract sequence of a certain type with a static number of elements.
+  class Seq n a seq where
+    Next : (n > 0) => seq n a -> a
+    Left : seq n a -> Range UInt
+
+  --| Defines an abstract sequence of a certain type.
+  class Seq a seq where
+    Next : seq a -> Option a
+    Left : seq n a -> Range UInt

@@ -1,0 +1,36 @@
+
+namespace System
+
+  --| A pointer to a value. It cannot be null.
+  type Ptr a = Environment.PointerSize
+
+  --| Casts the pointer to an integer.
+  To : Ptr a -> Int
+  To = Memory.Transmute
+
+  --| Casts the integer to a pointer.
+  To : Int -> Ptr a
+  To = Memory.Transmute
+
+  --| Returns the size of the given value.
+  SizeOf : Type -> Int
+  SizeOf t = t
+
+  --| Returns a new pointer pointing at the given offset, relative to its original location.
+  Offset : Ptr a -> Int -> Ptr a
+  Offset p n = ((p as UInt) + (n * SizeOf 'a)) as (Ptr 'a)
+
+  --| Reads the value pointed to by the pointer.
+  Read : Ptr a -> a
+
+  static if Backend == "X86" then
+    Read p = assembly mov R, [p]
+                      ret
+
+  --| Writes the given value to the pointer.
+  Write : Ptr a -> ByValue a -> ()
+  
+  static if Backend == "X86" then
+    Write p v = assembly mov [p], v
+                         ret
+

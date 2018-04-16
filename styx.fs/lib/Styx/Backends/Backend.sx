@@ -1,0 +1,8 @@
+
+namespace Styx.Backends
+
+  --| Defines a Styx backend.
+  Backend : Concept
+  Backend type = type.HasProperty "Name"
+              && type.HasProperty "Version"
+

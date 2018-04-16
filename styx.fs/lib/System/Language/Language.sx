@@ -1,0 +1,31 @@
+
+namespace System.Language
+  --^ Language constructs.
+
+
+  --| A `Function` signature.
+  type Signature = { TypeParameters : Vec (Constraint) ,
+                     Components     : Vec ()           }
+
+  implicit namespace Signature
+    Check : Signature -> [TypeInstance] -> Option TypeInstance
+    Check sig types = None
+
+  --| A Styx function.
+  type Function = { Name      : String     ,
+                    Namespace : String     ,
+                    Signature : Signature  ,
+                    Bodies    : Expression }
+
+  implicit namespace Function
+    ReturnType : Function -> TypeInstance
+    ReturnType f = 
+
+    IsType : Function -> Boolean
+    IsType f = f.
+
+  --| The unique instance of a type.
+  type TypeInstance = { Type       : Function                      ,
+                        Properties : Vec (Property, PropertyValue) ,
+                        Arguments  : Vec (Argument)                }
+
